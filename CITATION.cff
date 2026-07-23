@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "Processing and Figure-Generation Scripts for Evaluating a Double-Spherical-Shell Shield for Shallow-Water Ocean-Bottom Seismic Noise Reduction"
+version: "1.0"
+date-released: 2026-07-23
+type: software
+authors:
+  - family-names: "Li"
+    given-names: "Yang"
+    orcid: "https://orcid.org/0009-0003-8764-0536"
+    affiliation: "Tongji University"
+
+    doi: "10.5281/zenodo.21508388"
+    repository-code: "https://github.com/Blackleeeee/ESS-OBS-Shield-Processing.git"
+
+abstract: >-
+  MATLAB, Python, and shell scripts for instrument-response provenance,
+  continuous-to-daily and daily-to-hourly SAC segmentation, hourly power
+  spectral density calculation, root-mean-square analysis, and reproduction
+  of the principal figures used to evaluate a double-spherical-shell shield
+  for reducing flow-induced noise in shallow-water ocean-bottom seismic
+  observations.
+keywords:
+  - ocean-bottom seismometer
+  - shallow-water seismic observation
+  - flow-induced noise
+  - seismic noise reduction
+  - power spectral density
+  - root mean square
+  - instrument response
+  - MATLAB
+  - ObsPy
+  - shell script
+license: MIT

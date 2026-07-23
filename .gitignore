@@ -1,0 +1,22 @@
+# Generated intermediate data and figures
+working_data/
+outputs/
+
+# Python cache and build products
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# MATLAB temporary and autosave files
+*.asv
+*.m~
+slprj/
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*~

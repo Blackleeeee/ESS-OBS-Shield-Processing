@@ -1,0 +1,7 @@
+# Direct Python dependencies used by the repository.
+# Replace the minimum versions with the exact versions used in final
+# validation when strict environment reproduction is required.
+
+numpy>=1.24
+matplotlib>=3.7
+obspy>=1.4

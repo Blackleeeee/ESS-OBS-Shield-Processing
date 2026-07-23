@@ -60,7 +60,7 @@ Insert the identifiers after publication:
 
 ```text
 DATA DOI: <10.5281/zenodo.21501794>
-SOFTWARE DOI: <10.5281/zenodo.21508388>
+SOFTWARE DOI: <10.5281/zenodo.21511732>
 ```
 
 ## Important data-level distinction

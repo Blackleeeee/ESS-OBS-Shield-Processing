@@ -4,7 +4,7 @@
 
 This repository contains the MATLAB, Python, and shell scripts used to process continuous ocean-bottom seismic records and reproduce the RMS, PSD, PSD-difference, and current-speed analyses used to evaluate a double-spherical-shell shield for shallow-water ocean-bottom seismometers.
 
-The archived analysis workflow begins with continuous seismic waveforms that have already been corrected for instrument response and converted to acceleration.
+The archived analysis workflow begins with continuous seismic waveforms that have already been corrected for instrument response and converted to acceleration.　The directly reproducible analysis workflow begins with the archived response-corrected continuous acceleration SAC files. The preceding conversion and merging of the raw miniSEED records into continuous SAC files are not included in this software release.
 
 ## Repository structure
 

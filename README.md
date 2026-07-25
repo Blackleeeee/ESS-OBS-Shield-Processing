@@ -1,14 +1,13 @@
-# ESS OBS Shield Processing and Figure Scripts
+ESS OBS Shield Processing and Figure-Generation Scripts
 
-## Overview
+1. Overview
 
-This repository contains the MATLAB, Python, and shell scripts used to process continuous ocean-bottom seismic records and reproduce the RMS, PSD, PSD-difference, and current-speed analyses used to evaluate a double-spherical-shell shield for shallow-water ocean-bottom seismometers.
+This repository contains the MATLAB, Python, and Bash scripts used to process continuous ocean-bottom seismic records and reproduce the root mean square (RMS), power spectral density (PSD), PSD-difference, and current-dependent analyses used to evaluate a double-spherical-shell shield for shallow-water ocean-bottom seismometers.
 
-The archived analysis workflow begins with continuous seismic waveforms that have already been corrected for instrument response and converted to acceleration.　The directly reproducible analysis workflow begins with the archived response-corrected continuous acceleration SAC files. The preceding conversion and merging of the raw miniSEED records into continuous SAC files are not included in this software release.
+The directly reproducible analysis workflow begins with continuous seismic waveforms that have already been corrected for instrument response and converted to acceleration.
 
-## Repository structure
+2. Repository Structure
 
-```text
 ESS_OBS_Shield_Scripts_v1.0/
 ├── README.md
 ├── LICENSE
@@ -29,23 +28,31 @@ ESS_OBS_Shield_Scripts_v1.0/
     ├── Fig2_RMS.m
     ├── Fig3_PSD_PSDDiff.m
     └── Fig4_PSDDiff_CurrentSpeed.m
-```
 
-The functions required for PSD calculation are included as local functions inside `CalPSD_main.m`; no separate MATLAB function directory is required.
+The functions required for PSD calculation are included as local functions inside CalPSD_main.m; no separate MATLAB function directory is required.
 
-## Associated data repository
+3. Persistent Identifiers and Source Repository
 
-The software and data directories are expected to be adjacent:
+Dataset: https://doi.org/10.5281/zenodo.21501794
 
-```text
+Software release: https://doi.org/10.5281/zenodo.21511732
+
+GitHub repository: https://github.com/Blackleeeee/ESS-OBS-Shield-Processing
+
+Software version: 1.0.0
+
+Software license: MIT License
+
+4. Associated Data Repository
+
+The software and expanded data directories are expected to be adjacent:
+
 Test_SUSTech/
 ├── ESS_OBS_Shield_Data_v1.0/
 └── ESS_OBS_Shield_Scripts_v1.0/
-```
 
 The scripts use the following archived data products:
 
-```text
 ESS_OBS_Shield_Data_v1.0/
 ├── Pro_Seismic_acceleration_v1.0/
 ├── Processed_PSD_v1.0/
@@ -54,391 +61,347 @@ ESS_OBS_Shield_Data_v1.0/
 ├── Raw_Current_Tide_v1.0/
 ├── Raw_Metadata_v1.0/
 └── Raw_Seismic_mseed_v1.0/
-```
 
-Insert the identifiers after publication:
+For Zenodo distribution, each data directory is provided as a separate .tar.gz archive. The archives must be extracted before running the scripts.
 
-```text
-DATA DOI: <10.5281/zenodo.21501794>
-SOFTWARE DOI: <10.5281/zenodo.21511732>
-```
+5. Important Data-Level Distinction
 
-## Important data-level distinction
+Pro_Seismic_acceleration_v1.0 contains continuous seismic records that have already been corrected for instrument response and converted to acceleration. These data must not be processed again with 01_Remove_Instrument_Response.sh.
 
-`Pro_Seismic_acceleration_v1.0` contains continuous seismic records that have already been corrected for instrument response and converted to acceleration. These data must not be processed again with `01_Remove_Instrument_Response.sh`.
+The directly reproducible workflow distributed with this release begins with:
 
-The directly reproducible PSD workflow distributed with this release begins with:
-
-```text
 Pro_Seismic_acceleration_v1.0
-```
 
-The response-removal script is retained as a provenance script. It requires uncorrected continuous SAC files as input. The archived raw miniSEED files cannot be passed directly to this SAC script without an additional miniSEED-to-continuous-SAC conversion and merging step.
+The response-removal script is retained as a provenance script. It requires uncorrected continuous SAC files as input. The archived raw miniSEED files cannot be passed directly to this SAC script without an additional miniSEED-to-continuous-SAC conversion and merging step, which is not included in this release.
 
-## Software requirements
+6. Software Requirements
 
-### Python
+6.1 Python
 
-- Python 3.9 or later
-- ObsPy
-- NumPy
-- Matplotlib
+Python 3.9 or later
+
+ObsPy
+
+NumPy
+
+Matplotlib
 
 Install the direct Python dependencies from the repository root:
 
-```bash
 python -m pip install -r requirements.txt
-```
 
-### MATLAB
+6.2 MATLAB
 
-MATLAB R2016b or later is recommended because the scripts use local functions at the end of script files. The Statistics and Machine Learning Toolbox may be required for functions such as `prctile`.
+MATLAB R2016b or later is recommended because the MATLAB scripts contain local functions at the end of script files. The Statistics and Machine Learning Toolbox may be required for functions such as prctile.
 
-### SAC
+6.3 SAC
 
 The preprocessing shell scripts require:
 
-- Seismic Analysis Code (`sac`)
-- `saclst`
-- Bash
+Seismic Analysis Code (sac);
 
-Ensure that both commands are available in `PATH`:
+saclst;
 
-```bash
+Bash.
+
+Confirm that the SAC executables are available:
+
 command -v sac
 command -v saclst
-```
 
-## Processing workflow
+7. Processing Workflow
 
-Run all commands from the root of `ESS_OBS_Shield_Scripts_v1.0`.
+Run the following commands from the root directory of ESS_OBS_Shield_Scripts_v1.0.
 
-### Step 1: optional instrument-response removal
+7.1 Optional Instrument-Response Removal
 
 Script:
 
-```text
 01_Preprocessing/01_Remove_Instrument_Response.sh
-```
 
 Purpose:
 
-- removes the instrument response from uncorrected continuous SAC files;
-- converts the seismic channels to acceleration;
-- applies the original processing sequence:
+remove the instrument response from uncorrected continuous SAC files;
 
-```text
+convert the seismic records to acceleration;
+
+apply the original processing sequence:
+
 rmean
 rtr
 taper
 trans from polszeros ... to acc freq 0.001 0.005 40 45
-```
 
 Response file:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/
 └── Raw_Metadata_v1.0/
     └── Instrument-response.SACPZ
-```
 
-This step is not required when using the archived `Pro_Seismic_acceleration_v1.0` files.
+This step is not required when using the archived Pro_Seismic_acceleration_v1.0 files.
 
-```bash
+Make the script executable:
+
 chmod +x 01_Preprocessing/01_Remove_Instrument_Response.sh
-```
 
 Run only when uncorrected continuous SAC files are available:
 
-```bash
-./01_Preprocessing/01_Remove_Instrument_Response.sh \
-    /path/to/uncorrected_continuous_SAC \
-    ./working_data/Pro_Seismic_acceleration_v1.0 \
-    ../ESS_OBS_Shield_Data_v1.0/Raw_Metadata_v1.0/Instrument-response.SACPZ
-```
+./01_Preprocessing/01_Remove_Instrument_Response.sh     /path/to/uncorrected_continuous_SAC     ./working_data/Pro_Seismic_acceleration_v1.0     ../ESS_OBS_Shield_Data_v1.0/Raw_Metadata_v1.0/Instrument-response.SACPZ
 
-### Step 2: split continuous acceleration SAC into daily files
+7.2 Split Continuous Acceleration SAC Into Daily Files
 
 Script:
 
-```text
 01_Preprocessing/02_Split_Acceleration_SAC_to_Daily.py
-```
 
 Default input:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/
 └── Pro_Seismic_acceleration_v1.0/
-```
 
 Default output:
 
-```text
 working_data/SAC_Day/
 └── YYYYMM/YYYYMMDD/STATION/
-```
 
 Only complete UTC calendar days are written. Incomplete edge days are excluded.
 
-```bash
-python 01_Preprocessing/02_Split_Acceleration_SAC_to_Daily.py
-```
+Run:
 
-### Step 3: split daily SAC into hourly PSD-input files
+python 01_Preprocessing/02_Split_Acceleration_SAC_to_Daily.py
+
+7.3 Split Daily SAC Into Hourly PSD-Input Files
 
 Script:
 
-```text
 01_Preprocessing/03_Split_Daily_SAC_to_Hourly.sh
-```
 
 Default input:
 
-```text
 working_data/SAC_Day/
-```
 
 Default output:
 
-```text
 working_data/Hourly_Seismic_acceleration_v1.0/
 └── YYYYMM/YYYYMMDD/STATION/STATION.COMPONENT/
-```
 
 Each hourly segment retains the original operations:
 
-```text
 rmean
 rtr
 taper type cosine width 0.1
-```
 
 The original SAC cutting intervals are retained:
 
-```text
 0–3600 s
 3600–7200 s
 ...
 82800–86400 s
-```
 
-```bash
+Run:
+
 chmod +x 01_Preprocessing/03_Split_Daily_SAC_to_Hourly.sh
 ./01_Preprocessing/03_Split_Daily_SAC_to_Hourly.sh
-```
 
-### Step 4: calculate hourly PSD
+7.4 Calculate Hourly PSD
 
 Script:
 
-```text
 02_Calculation/CalPSD_main.m
-```
 
 Input:
 
-```text
 working_data/Hourly_Seismic_acceleration_v1.0/
-```
 
 The calculation follows the original workflow:
 
-1. loop over dates, stations, components, and hourly SAC files;
-2. calculate the one-sided FFT amplitude spectrum;
-3. apply logarithmic frequency smoothing;
-4. interpolate to the prescribed frequency vector;
-5. convert the amplitude spectrum to PSD;
-6. save the PSD matrices.
+loop over dates, stations, components, and hourly SAC files;
 
-```bash
+calculate the one-sided FFT amplitude spectrum;
+
+apply logarithmic frequency smoothing;
+
+interpolate to the prescribed frequency vector;
+
+convert the amplitude spectrum to PSD;
+
+save the PSD matrices.
+
+Run:
+
 matlab -batch "run('02_Calculation/CalPSD_main.m')"
-```
 
-Verify that the generated products agree with the archived files in:
+The generated PSD products can be compared with:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/Processed_PSD_v1.0/
-```
 
-## Figure-generation workflow
+8. Figure-Generation Workflow
 
-### Figure 2: continuous waveforms and tide
+8.1 Figure 2: Continuous Waveforms and Tide
 
 Script:
 
-```text
 03_Figures/Fig2_Waveform.py
-```
 
-Input:
+Inputs:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/
 ├── Pro_Seismic_acceleration_v1.0/
 └── Raw_Current_Tide_v1.0/Tide_UTC.txt
-```
 
 The plotted seismic waveforms are response-corrected acceleration records.
 
-```bash
-python 03_Figures/Fig2_Waveform.py
-```
+Run:
 
-### Figure 2: RMS calculation and plots
+python 03_Figures/Fig2_Waveform.py
+
+8.2 Figure 2: RMS Calculation and Plots
 
 Script:
 
-```text
 03_Figures/Fig2_RMS.m
-```
 
-Input:
+Inputs:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/
 ├── Pro_Seismic_acceleration_v1.0/
 └── Raw_Current_Tide_v1.0/
     ├── dataforzzh.mat
     └── Tide_UTC.txt
-```
 
 Principal settings:
 
-- RMS window length: 1800 s;
-- expected sampling rate: 100 Hz;
-- horizontal resultant: `sqrt(E^2 + N^2)`;
-- linear detrending within each window;
-- no additional taper before RMS calculation;
-- current speed interpolated to the start time of each RMS window.
+RMS window length: 1,800 s;
 
-```bash
+window overlap: none;
+
+expected sampling rate: 100 Hz;
+
+horizontal resultant: sqrt(E^2 + N^2);
+
+linear detrending within each window;
+
+no additional taper before RMS calculation;
+
+minimum valid-data fraction: 99%;
+
+current speed interpolated to the start time of each RMS window.
+
+Run:
+
 matlab -batch "run('03_Figures/Fig2_RMS.m')"
-```
 
-### Figure 3: PSD and PSD difference
+8.3 Figure 3: PSD and PSD Difference
 
 Script:
 
-```text
 03_Figures/Fig3_PSD_PSDDiff.m
-```
 
 Input:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/Processed_PSD_v1.0/
-```
 
-The right panel uses:
+The PSD difference is defined as:
 
-```text
 PSDdiff = PSD(T02) - PSD(T01)
-```
 
 Negative values indicate lower spectral power at the shielded OBS.
 
-```bash
-matlab -batch "run('03_Figures/Fig3_PSD_PSDDiff.m')"
-```
+Run:
 
-### Figure 4: PSD difference versus current speed
+matlab -batch "run('03_Figures/Fig3_PSD_PSDDiff.m')"
+
+8.4 Figure 4: PSD Difference Versus Current Speed
 
 Script:
 
-```text
 03_Figures/Fig4_PSDDiff_CurrentSpeed.m
-```
 
-Input:
+Required inputs:
 
-```text
 ../ESS_OBS_Shield_Data_v1.0/
 ├── Processed_PSDDiff_v1.0/
 └── Raw_Current_Tide_v1.0/
     ├── Flow_Speed_UTC.txt
     ├── FloodEvents.txt
     └── EbbEvents.txt
-```
+
+FloodEvents.txt and EbbEvents.txt contain the start and end times of the flood- and ebb-tide intervals used by the plotting script. The script reads these interval files directly and does not derive them internally.
 
 The script compares flood and ebb conditions in three frequency bands:
 
-- 0.01–0.1 Hz
-- 0.1–10 Hz
-- 10–40 Hz
+0.01–0.1 Hz;
 
-```bash
+0.1–10 Hz;
+
+10–40 Hz.
+
+Run:
+
 matlab -batch "run('03_Figures/Fig4_PSDDiff_CurrentSpeed.m')"
-```
 
-## Units and time standard
+9. Units and Time Standard
 
-- Seismic acceleration: `m/s^2`
-- PSD: `dB re (m/s^2)^2/Hz`
-- Current speed: `m/s`
-- Tide level: `m`
-- Time standard: UTC
+Seismic acceleration: m/s^2;
 
-The current record stored in `dataforzzh.mat` is converted from Beijing time to UTC inside `Fig2_RMS.m`. Text current and tide products whose filenames contain `_UTC` are treated as UTC inputs.
+PSD: dB re (m/s^2)^2/Hz;
 
-## Intermediate and generated files
+PSD difference: dB;
+
+Current speed: m/s;
+
+Tide level: m;
+
+Time standard: UTC.
+
+The current record stored in dataforzzh.mat is converted from Beijing time (UTC+8) to UTC inside Fig2_RMS.m. Text current and tide products whose filenames contain _UTC are treated as UTC inputs. The UTC conversion must not be applied twice.
+
+10. Intermediate and Generated Files
 
 The following directories are created locally and are intentionally excluded from version control:
 
-```text
 working_data/
 outputs/
-```
 
 They contain reproducible intermediate waveforms, calculated products, and figure files.
 
-## Reproducibility checks before release
+11. Validation Checks
 
 Check for remaining local absolute paths:
 
-```bash
 grep -R "/home/lyang" .
 grep -R "/Disk1\|/Disk2" .
-```
 
 Check Python syntax:
 
-```bash
-python -m py_compile \
-    01_Preprocessing/02_Split_Acceleration_SAC_to_Daily.py \
-    03_Figures/Fig2_Waveform.py
-```
+python -m py_compile     01_Preprocessing/02_Split_Acceleration_SAC_to_Daily.py     03_Figures/Fig2_Waveform.py
 
 Check shell syntax:
 
-```bash
 bash -n 01_Preprocessing/01_Remove_Instrument_Response.sh
 bash -n 01_Preprocessing/03_Split_Daily_SAC_to_Hourly.sh
-```
 
 Check MATLAB scripts:
 
-```bash
 matlab -batch "checkcode('02_Calculation/CalPSD_main.m')"
 matlab -batch "checkcode('03_Figures/Fig2_RMS.m')"
 matlab -batch "checkcode('03_Figures/Fig3_PSD_PSDDiff.m')"
 matlab -batch "checkcode('03_Figures/Fig4_PSDDiff_CurrentSpeed.m')"
-```
 
-Because the scripts are stored in subdirectories, confirm that each script resolves the data directory as a sibling of `ESS_OBS_Shield_Scripts_v1.0`, rather than as a child of the script repository.
+Because the scripts are stored in subdirectories, each script must resolve the data directory as a sibling of ESS_OBS_Shield_Scripts_v1.0, rather than as a child of the software repository.
 
-## Citation
+12. Citation
 
-After publication of the Zenodo software record, cite the archived software version using the metadata in `CITATION.cff`.
+Please cite this software as:
 
-Suggested citation template:
+Li, Y. (2026). Processing and figure-generation scripts for evaluating a double-spherical-shell shield for shallow-water ocean-bottom seismic noise reduction (Version 1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21511732
 
-```text
-Li, Y. (2026). Processing and Figure-Generation Scripts for Evaluating a Double-Spherical-Shell Shield for Shallow-Water Ocean-Bottom Seismic Noise Reduction (Version 1.0) [Software]. Zenodo. <10.5281/zenodo.21508388>
-```
+The associated dataset should be cited separately:
 
-The associated dataset should be cited separately using its dataset DOI.
+Li, Y. (2026). Seismic and hydrodynamic data for evaluating a double-spherical-shell shield in shallow-water ocean-bottom seismic observations (Version 1.0.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21501794
 
-## License
+When the dataset and software are cited together in a reference list, year suffixes such as 2026a and 2026b may be assigned according to the journal's reference-ordering rules.
 
-This software is released under the MIT License. See `LICENSE`.
+13. License
+
+This software is released under the MIT License. See LICENSE.

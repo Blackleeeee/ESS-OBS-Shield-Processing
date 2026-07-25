@@ -394,11 +394,11 @@ Because the scripts are stored in subdirectories, each script must resolve the d
 
 Please cite this software as:
 
-Li, Y. (2026). Processing and figure-generation scripts for evaluating a double-spherical-shell shield for shallow-water ocean-bottom seismic noise reduction (Version 1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21511732
+Li, Y. (2026). Processing and Figure Generation Scripts for a Paired Shielding Experiment on Flow-Induced Noise in Shallow-Water Ocean-Bottom Seismic Records (Version 1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21511732
 
 The associated dataset should be cited separately:
 
-Li, Y. (2026). Seismic and hydrodynamic data for evaluating a double-spherical-shell shield in shallow-water ocean-bottom seismic observations (Version 1.0.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21501794
+Li, Y. (2026). Seismic and Hydrodynamic Data From a Paired Shielding Experiment on Flow-Induced Noise in Shallow-Water Ocean-Bottom Seismic Records (Version 1.0.0) [Dataset]. Zenodo. https://doi.org/10.5281/zenodo.21501794
 
 When the dataset and software are cited together in a reference list, year suffixes such as 2026a and 2026b may be assigned according to the journal's reference-ordering rules.
 

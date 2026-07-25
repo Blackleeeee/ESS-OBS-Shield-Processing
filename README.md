@@ -35,7 +35,7 @@ The functions required for PSD calculation are included as local functions insid
 
 Dataset: https://doi.org/10.5281/zenodo.21501794
 
-Software release: https://doi.org/10.5281/zenodo.21511732
+Software release:  https://doi.org/10.5281/zenodo.21543745
 
 GitHub repository: https://github.com/Blackleeeee/ESS-OBS-Shield-Processing
 

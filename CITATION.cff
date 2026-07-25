@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 
-title: "Processing and Figure-Generation Scripts for Evaluating a Double-Spherical-Shell Shield for Shallow-Water Ocean-Bottom Seismic Noise Reduction"
+title: "Processing and Figure Generation Scripts for a Paired Shielding Experiment on Flow-Induced Noise in Shallow-Water Ocean-Bottom Seismic Records"
 
 version: "1.0.1"
 date-released: 2026-07-25
